@@ -260,7 +260,6 @@ class AlumniVoice_Public_Content {
 				'av_term_to'   => $term_to,
 				'av_club'      => $club,
 				'av_committee' => $committee,
-				'av_sort'      => 'newest' === $sort ? '' : $sort,
 			),
 			static function( $value ) { return '' !== $value && 0 !== $value; }
 		);
@@ -378,7 +377,7 @@ class AlumniVoice_Public_Content {
 								$term = (int) get_post_meta( $post_id, '_alumni_voice_graduation_term', true );
 								$club_name = (string) get_post_meta( $post_id, '_alumni_voice_club_activity', true );
 								$committee_name = (string) get_post_meta( $post_id, '_alumni_voice_committee_activity', true );
-								$initial = $display_name ? mb_substr( $display_name, 0, 1 ) : '卒';
+								$initial = $display_name ? ( function_exists( 'mb_substr' ) ? mb_substr( $display_name, 0, 1 ) : substr( $display_name, 0, 1 ) ) : '卒';
 								?>
 								<article class="alumni-voice-directory__card">
 									<div class="alumni-voice-directory__avatar" aria-hidden="true"><?php echo esc_html( $initial ); ?></div>
