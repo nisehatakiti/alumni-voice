@@ -3,6 +3,8 @@ name: Build AlumniVoice ZIP
 on:
   workflow_dispatch:
   push:
+    branches:
+      - main
     tags:
       - 'v*'
 
@@ -21,7 +23,7 @@ jobs:
       - name: Build installable plugin package
         run: |
           mkdir -p dist/alumni-voice
-          rsync -av             --exclude='.git'             --exclude='.github'             --exclude='dist'             --exclude='.DS_Store'             --exclude='*.zip'             ./ dist/alumni-voice/
+          tar             --exclude-vcs             --exclude='./.github'             --exclude='./dist'             --exclude='./.DS_Store'             --exclude='*.zip'             -cf - . | tar -xf - -C dist/alumni-voice
           cd dist
           zip -r alumni-voice.zip alumni-voice
 
