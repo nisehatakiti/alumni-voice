@@ -2,18 +2,19 @@
 /**
  * Plugin Name: AlumniVoice
  * Description: Official Alumni Core extension for structured alumni voices, profiles and future search/discovery.
- * Version: 0.1.8
+ * Version: 0.1.9
  * Requires PHP: 7.4
  * Text Domain: alumni-voice
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit;
-define( 'ALUMNI_VOICE_VERSION', '0.1.8' );
+define( 'ALUMNI_VOICE_VERSION', '0.1.9' );
 define( 'ALUMNI_VOICE_FILE', __FILE__ );
 define( 'ALUMNI_VOICE_PATH', plugin_dir_path( __FILE__ ) );
 
 require_once ALUMNI_VOICE_PATH . 'includes/class-dependency.php';
 require_once ALUMNI_VOICE_PATH . 'includes/class-public-content.php';
+require_once ALUMNI_VOICE_PATH . 'includes/class-notifications.php';
 require_once ALUMNI_VOICE_PATH . 'includes/class-plugin.php';
 
 // Register the Alumni Core content-discovery filters during plugin loading,
