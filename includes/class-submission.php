@@ -120,6 +120,7 @@ class AlumniVoice_Submission {
 			line-height: 1.25;
 		}
 		.alumni-voice-form__field input,
+		.alumni-voice-form__field select,
 		.alumni-voice-form__question textarea {
 			width: 100%;
 			max-width: 100%;
@@ -129,11 +130,13 @@ class AlumniVoice_Submission {
 			color: #22364f;
 			box-shadow: inset 0 1px 2px rgba( 33, 54, 79, .03 );
 		}
-		.alumni-voice-form__field input {
+		.alumni-voice-form__field input,
+		.alumni-voice-form__field select {
 			height: 48px;
 			padding: .65rem .8rem;
 		}
 		.alumni-voice-form__field input:focus,
+		.alumni-voice-form__field select:focus,
 		.alumni-voice-form__question textarea:focus {
 			outline: 0;
 			border-color: #2e67a6;
@@ -157,6 +160,16 @@ class AlumniVoice_Submission {
 		.alumni-voice-form__field--class { grid-column: span 3; }
 		.alumni-voice-form__field--club { grid-column: span 4; }
 		.alumni-voice-form__field--committee { grid-column: span 5; }
+		.alumni-voice-form__field--career { grid-column: span 12; }
+		.alumni-voice-form__field--career-place { grid-column: span 12; }
+		.alumni-voice-form__field--job { grid-column: span 6; }
+		.alumni-voice-form__field--current { grid-column: span 6; }
+		.alumni-voice-form__career-options { display:flex; flex-wrap:wrap; gap:.7rem 1.2rem; }
+		.alumni-voice-form__career-options label { margin:0; font-weight:600; }
+		.alumni-voice-form__career-options input { width:auto; height:auto; margin-right:.35rem; }
+		.alumni-voice-form__consent { margin-top:1.2rem; padding:1rem 1.2rem; background:#f5f8fc; border:1px solid #d6e1eb; border-radius:8px; }
+		.alumni-voice-form__consent label { display:flex; align-items:flex-start; gap:.6rem; font-weight:700; line-height:1.65; }
+		.alumni-voice-form__consent input { margin-top:.25rem; }
 		.alumni-voice-form__input-with-suffix {
 			display: flex;
 			align-items: center;
@@ -279,6 +292,32 @@ class AlumniVoice_Submission {
 				</div>
 			</div>
 
+			<section class="alumni-voice-form__section alumni-voice-form__career-section">
+				<h2 class="alumni-voice-form__section-title">卒業後・現在の情報</h2>
+				<div class="alumni-voice-form__grid">
+					<div class="alumni-voice-form__field alumni-voice-form__field--career">
+						<label>卒業後の進路 <span class="alumni-voice-form__required">必須</span></label>
+						<div class="alumni-voice-form__career-options">
+							<label><input type="radio" name="career_path" value="進学" required>進学</label>
+							<label><input type="radio" name="career_path" value="就職">就職</label>
+							<label><input type="radio" name="career_path" value="その他">その他</label>
+						</div>
+					</div>
+					<div class="alumni-voice-form__field alumni-voice-form__field--career-place">
+						<label for="alumni_voice_career_place">卒業後の進路（勤務先／学校等）</label>
+						<input id="alumni_voice_career_place" type="text" name="career_place" placeholder="例）○○大学 ○○学部、○○株式会社">
+					</div>
+					<div class="alumni-voice-form__field alumni-voice-form__field--job">
+						<label for="alumni_voice_job">職種</label>
+						<select id="alumni_voice_job" name="job"><option value="">選択してください</option><?php foreach ( get_terms( array( 'taxonomy' => 'alumni_voice_job', 'hide_empty' => false ) ) as $job_term ) : ?><option value="<?php echo esc_attr( $job_term->term_id ); ?>"><?php echo esc_html( $job_term->name ); ?></option><?php endforeach; ?></select>
+					</div>
+					<div class="alumni-voice-form__field alumni-voice-form__field--current">
+						<label for="alumni_voice_current_affiliation">現在の所属（勤務先／学校等）</label>
+						<input id="alumni_voice_current_affiliation" type="text" name="current_affiliation" placeholder="例）○○株式会社、○○大学大学院">
+					</div>
+				</div>
+			</section>
+
 			<section class="alumni-voice-form__section alumni-voice-form__interview">
 				<h2 class="alumni-voice-form__section-title">インタビュー</h2>
 				<p class="alumni-voice-form__interview-description">それぞれの質問に、できるだけ具体的にお答えください。在校生や卒業生のみなさんにとって、貴重なメッセージとなります。</p>
@@ -290,6 +329,7 @@ class AlumniVoice_Submission {
 				<?php endforeach; ?>
 			</section>
 
+			<div class="alumni-voice-form__consent"><label><input type="checkbox" name="public_consent" value="1" required>投稿内容が、卒業生の声としてWebサイト上で公開されることに同意します。 <span class="alumni-voice-form__required">必須</span></label></div>
 			<p class="alumni-voice-form__submit"><button type="submit">送信する</button></p>
 		</form>
 		<?php
@@ -302,17 +342,23 @@ class AlumniVoice_Submission {
 		$name = sanitize_text_field( wp_unslash( $_POST['full_name'] ?? '' ) );
 		$email = sanitize_email( wp_unslash( $_POST['email'] ?? '' ) );
 		$display = sanitize_text_field( wp_unslash( $_POST['display_name'] ?? '' ) );
-		if ( '' === $name || '' === $display || ! is_email( $email ) ) wp_die( '必須項目を確認してください。' );
+		$year_input = absint( $_POST['graduation_year'] ?? 0 );
+		$term_input = absint( $_POST['graduation_term'] ?? 0 );
+		$career_path = sanitize_text_field( wp_unslash( $_POST['career_path'] ?? '' ) );
+		if ( '' === $name || '' === $display || ! is_email( $email ) || ( $year_input <= 0 && $term_input <= 0 ) || ! in_array( $career_path, array( '進学', '就職', 'その他' ), true ) || empty( $_POST['public_consent'] ) ) wp_die( '必須項目を確認してください。' );
 		$post_id = wp_insert_post( array( 'post_type'=>AlumniVoice_Post_Type::POST_TYPE, 'post_status'=>'draft', 'post_title'=>$display, 'post_content'=>'' ), true );
 		if ( is_wp_error( $post_id ) ) wp_die( '保存に失敗しました。' );
-		$fields = array('full_name','furigana','class_name','club_activity','committee_activity','display_name');
+		$fields = array('full_name','furigana','class_name','club_activity','committee_activity','display_name','career_place','current_affiliation');
 		foreach($fields as $key) update_post_meta($post_id,'_alumni_voice_'.$key,sanitize_text_field(wp_unslash($_POST[$key]??'')));
 		update_post_meta($post_id,'_alumni_voice_email',$email);
-		$year=absint($_POST['graduation_year']??0); $term=absint($_POST['graduation_term']??0);
+		$year=$year_input; $term=$term_input;
 		if($year>0&&$term<=0) $term=absint(apply_filters('alumni_core_graduation_term_from_year',null,$year,$post_id));
 		elseif($term>0&&$year<=0&&function_exists('alumni_core_graduation_term_to_year')) $year=absint(alumni_core_graduation_term_to_year($term));
 		if($year>0) update_post_meta($post_id,'_alumni_voice_graduation_year',$year);
 		if($term>0) update_post_meta($post_id,'_alumni_voice_graduation_term',$term);
+		update_post_meta($post_id,'_alumni_voice_public_consent',1);
+		wp_set_object_terms($post_id,$career_path,'alumni_voice_career',false);
+		$job_id=absint($_POST['job']??0); if($job_id>0) wp_set_object_terms($post_id,array($job_id),'alumni_voice_job',false); else wp_set_object_terms($post_id,array(),'alumni_voice_job',false);
 		$answers=(array)($_POST['answers']??array());
 		foreach(AlumniVoice_Form_Settings::get_questions() as $q){$answer=sanitize_textarea_field(wp_unslash($answers[$q['id']]??''));if(!empty($q['required'])&&''===$answer){wp_delete_post($post_id,true);wp_die('必須の質問に回答してください。');}update_post_meta($post_id,'_alumni_voice_answer_'.$q['id'],$answer);}
 		wp_safe_redirect(add_query_arg('alumni_voice_submitted','1',wp_get_referer()?:home_url('/')));
