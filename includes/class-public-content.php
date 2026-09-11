@@ -26,6 +26,7 @@ class AlumniVoice_Public_Content {
 		add_shortcode( 'alumni_voice_list', array( __CLASS__, 'render_list' ) );
 
 		add_action( 'init', array( __CLASS__, 'ensure_pages' ), 20 );
+		add_filter( 'body_class', array( __CLASS__, 'body_class' ) );
 
 	}
 
@@ -65,7 +66,8 @@ class AlumniVoice_Public_Content {
 	}
 
 	public static function register_system_labels( $labels ) {
-		$labels[ self::SYSTEM_SUBMIT ] = '卒業生の声を投稿する';
+		$settings = class_exists( 'AlumniVoice_Form_Settings' ) ? AlumniVoice_Form_Settings::get_public_settings() : array();
+		$labels[ self::SYSTEM_SUBMIT ] = $settings['content_label'] ?? '卒業生の声を投稿する';
 		$labels[ self::SYSTEM_LIST ]   = '卒業生の声を参照する';
 		return $labels;
 	}
@@ -81,10 +83,11 @@ class AlumniVoice_Public_Content {
 	}
 
 	public static function ensure_pages() {
+		$settings = class_exists( 'AlumniVoice_Form_Settings' ) ? AlumniVoice_Form_Settings::get_public_settings() : array();
 		self::ensure_page(
 			self::OPTION_SUBMIT_PAGE,
 			self::SUBMIT_SLUG,
-			'卒業生の声を投稿する',
+			$settings['page_title'] ?? '卒業生の声を投稿する',
 			'[alumni_voice_submit]'
 		);
 		self::ensure_page(
@@ -124,6 +127,18 @@ class AlumniVoice_Public_Content {
 		}
 
 		return 0;
+	}
+
+
+	public static function body_class( $classes ) {
+		if ( ! is_singular( 'page' ) ) {
+			return $classes;
+		}
+		$page_id = (int) get_option( self::OPTION_SUBMIT_PAGE, 0 );
+		if ( $page_id && (int) get_queried_object_id() === $page_id ) {
+			$classes[] = 'alumni-voice-submit-page';
+		}
+		return $classes;
 	}
 
 	public static function get_submit_url() {
