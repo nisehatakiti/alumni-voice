@@ -361,6 +361,7 @@ class AlumniVoice_Submission {
 		$job_id=absint($_POST['job']??0); if($job_id>0) wp_set_object_terms($post_id,array($job_id),'alumni_voice_job',false); else wp_set_object_terms($post_id,array(),'alumni_voice_job',false);
 		$answers=(array)($_POST['answers']??array());
 		foreach(AlumniVoice_Form_Settings::get_questions() as $q){$answer=sanitize_textarea_field(wp_unslash($answers[$q['id']]??''));if(!empty($q['required'])&&''===$answer){wp_delete_post($post_id,true);wp_die('必須の質問に回答してください。');}update_post_meta($post_id,'_alumni_voice_answer_'.$q['id'],$answer);}
+		AlumniVoice_Notifications::send_admin_new_submission( $post_id );
 		wp_safe_redirect(add_query_arg('alumni_voice_submitted','1',wp_get_referer()?:home_url('/')));
 		exit;
 	}
