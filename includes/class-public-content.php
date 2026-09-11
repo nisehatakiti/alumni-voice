@@ -81,10 +81,18 @@ class AlumniVoice_Public_Content {
 
 	private static function ensure_page( $option, $slug, $title, $content ) {
 		$page_id = (int) get_option( $option, 0 );
-		if ( $page_id && 'page' === get_post_type( $page_id ) ) return $page_id;
+		if ( $page_id && 'page' === get_post_type( $page_id ) ) {
+			if ( get_the_title( $page_id ) !== $title ) {
+				wp_update_post( array( 'ID' => $page_id, 'post_title' => $title ) );
+			}
+			return $page_id;
+		}
 
 		$existing = get_page_by_path( $slug, OBJECT, 'page' );
 		if ( $existing instanceof WP_Post ) {
+			if ( $existing->post_title !== $title ) {
+				wp_update_post( array( 'ID' => $existing->ID, 'post_title' => $title ) );
+			}
 			update_option( $option, (int) $existing->ID );
 			return (int) $existing->ID;
 		}
