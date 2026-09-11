@@ -39,6 +39,7 @@ class AlumniVoice_Public_Content {
 	public static function register_core_integration() {
 		add_filter( 'alumni_core_system_content_keys', array( __CLASS__, 'register_system_keys' ) );
 		add_filter( 'alumni_core_system_content_labels', array( __CLASS__, 'register_system_labels' ) );
+		add_filter( 'alumni_core_system_content_groups', array( __CLASS__, 'register_system_groups' ) );
 		add_filter( 'alumni_core_system_content_url', array( __CLASS__, 'resolve_system_url' ), 10, 2 );
 	}
 
@@ -46,6 +47,21 @@ class AlumniVoice_Public_Content {
 		$keys[] = self::SYSTEM_SUBMIT;
 		$keys[] = self::SYSTEM_LIST;
 		return array_values( array_unique( $keys ) );
+	}
+
+	/**
+	 * Places AlumniVoice public pages in their own group in Alumni Core's
+	 * content picker instead of mixing them into Core's system pages.
+	 *
+	 * @param array $groups
+	 * @return array
+	 */
+	public static function register_system_groups( $groups ) {
+		$groups = is_array( $groups ) ? $groups : array();
+		$groups[ self::SYSTEM_SUBMIT ] = 'Alumni-Voice';
+		$groups[ self::SYSTEM_LIST ]   = 'Alumni-Voice';
+
+		return $groups;
 	}
 
 	public static function register_system_labels( $labels ) {
