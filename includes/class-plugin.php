@@ -14,6 +14,7 @@ class AlumniVoice_Plugin {
 		require_once ALUMNI_VOICE_PATH . 'includes/class-form-settings.php';
 		require_once ALUMNI_VOICE_PATH . 'includes/class-submission.php';
 		require_once ALUMNI_VOICE_PATH . 'includes/class-public-content.php';
+		require_once ALUMNI_VOICE_PATH . 'includes/class-notifications.php';
 		require_once ALUMNI_VOICE_PATH . 'admin/class-admin.php';
 
 		/*
@@ -41,6 +42,7 @@ class AlumniVoice_Plugin {
 		AlumniVoice_Form_Settings::register();
 		AlumniVoice_Submission::register();
 		AlumniVoice_Public_Content::register();
+		AlumniVoice_Notifications::register();
 		AlumniVoice_Admin::register();
 	}
 }
