@@ -53,7 +53,6 @@ class AlumniVoice_Submission {
 			font-size: .82rem;
 			font-weight: 800;
 			letter-spacing: .12em;
-			text-transform: uppercase;
 		}
 		.alumni-voice-form__hero h1 {
 			margin: 0 0 .45rem;
