@@ -1,0 +1,34 @@
+name: Build AlumniVoice ZIP
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build WordPress plugin ZIP
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build installable plugin package
+        run: |
+          mkdir -p dist/alumni-voice
+          rsync -av             --exclude='.git'             --exclude='.github'             --exclude='dist'             --exclude='.DS_Store'             --exclude='*.zip'             ./ dist/alumni-voice/
+          cd dist
+          zip -r alumni-voice.zip alumni-voice
+
+      - name: Upload plugin ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: alumni-voice
+          path: dist/alumni-voice.zip
+          if-no-files-found: error
+          retention-days: 30
