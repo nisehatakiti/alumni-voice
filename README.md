@@ -7,13 +7,15 @@ AlumniVoice is an official extension plugin for Alumni Core.
 - Requires Alumni Core Extension API 1.0+
 - Registers the `alumni_voice` custom post type
 - Structured alumni profile data
-  - Graduation year
-  - Graduation term
+  - Full name and furigana (non-public)
+  - Graduation year and Alumni Core-derived graduation term
+  - Class/group
+  - Contact email (non-public)
+  - Public display name
   - Job taxonomy
   - Career/destination taxonomy
   - School destination
   - Workplace
-- Reserved `person_id` field for future Alumni Core directory integration
 - Alumni Core admin integration and hub page
 
 ## Not included
