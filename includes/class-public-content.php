@@ -17,7 +17,7 @@ class AlumniVoice_Public_Content {
 	const OPTION_LIST_PAGE   = 'alumni_voice_list_page_id';
 
 	const SUBMIT_SLUG = 'alumni-voice-submit';
-	const LIST_SLUG   = 'alumni-voice';
+	const LIST_SLUG   = 'alumni-voices';
 
 	public static function register() {
 		add_shortcode( 'alumni_voice_submit', array( __CLASS__, 'render_submit' ) );
