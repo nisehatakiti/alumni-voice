@@ -20,12 +20,23 @@ class AlumniVoice_Public_Content {
 	const LIST_SLUG   = 'alumni-voices';
 
 	public static function register() {
+		self::register_core_integration();
+
 		add_shortcode( 'alumni_voice_submit', array( __CLASS__, 'render_submit' ) );
 		add_shortcode( 'alumni_voice_list', array( __CLASS__, 'render_list' ) );
 
 		add_action( 'init', array( __CLASS__, 'ensure_pages' ), 20 );
 
-		// Alumni Core automatically discovers these as selectable public content.
+	}
+
+	/**
+	 * Register the Alumni Core discovery filters as early as possible.
+	 *
+	 * These filters must be available independently of WordPress hook order,
+	 * because Alumni Core may render its admin picker before this plugin's
+	 * normal runtime bootstrap is reached.
+	 */
+	public static function register_core_integration() {
 		add_filter( 'alumni_core_system_content_keys', array( __CLASS__, 'register_system_keys' ) );
 		add_filter( 'alumni_core_system_content_labels', array( __CLASS__, 'register_system_labels' ) );
 		add_filter( 'alumni_core_system_content_url', array( __CLASS__, 'resolve_system_url' ), 10, 2 );
