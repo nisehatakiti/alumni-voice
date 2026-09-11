@@ -64,6 +64,8 @@ class AlumniVoice_Post_Type {
 			'graduation_year' => '卒業年',
 			'graduation_term' => '卒業期（どちらか一方を入力すると自動補完）',
 			'class_name' => '組',
+			'club_activity' => '部活動',
+			'committee_activity' => '委員会',
 			'email' => 'メールアドレス',
 			'display_name' => '公開表示名',
 		);
@@ -83,7 +85,7 @@ class AlumniVoice_Post_Type {
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
 		if ( ! current_user_can( 'edit_post', $post_id ) ) return;
 
-		foreach ( array( 'full_name', 'furigana', 'class_name', 'display_name' ) as $key ) {
+		foreach ( array( 'full_name', 'furigana', 'class_name', 'club_activity', 'committee_activity', 'display_name' ) as $key ) {
 			if ( isset( $_POST[ 'alumni_voice_' . $key ] ) ) {
 				update_post_meta( $post_id, '_alumni_voice_' . $key, sanitize_text_field( wp_unslash( $_POST[ 'alumni_voice_' . $key ] ) ) );
 			}
