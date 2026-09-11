@@ -27,6 +27,6 @@ class AlumniVoice_Admin {
 		echo '<p>公開：<strong>' . esc_html( $all ) . '</strong>件　下書き：<strong>' . esc_html( $draft ) . '</strong>件</p>';
 		echo '<p><a class="button button-primary" href="' . esc_url( admin_url( 'edit.php?post_type=' . AlumniVoice_Post_Type::POST_TYPE ) ) . '">卒業生の声一覧</a> ';
 		echo '<a class="button" href="' . esc_url( admin_url( 'post-new.php?post_type=' . AlumniVoice_Post_Type::POST_TYPE ) ) . '">新規追加</a></p></div>';
-		echo '<div class="card" style="max-width:760px;padding:20px;margin-top:16px;"><h2>構造化データ</h2><ul><li>卒業年・卒業期</li><li>職種（分類）</li><li>進路区分（分類）</li><li>進学先・勤務先</li><li>将来の名簿連携用 人物ID</li></ul><p>検索・フロントエンドの絞り込み機能は次段階で追加します。</p></div></div>';
+		echo '<div class="card" style="max-width:760px;padding:20px;margin-top:16px;"><h2>構造化データ</h2><ul><li>氏名・ふりがな（非公開）</li><li>卒業年・卒業期</li><li>組</li><li>メールアドレス（非公開）</li><li>公開表示名</li><li>職種（分類）</li><li>進路区分（分類）</li></ul><p>検索・フロントエンドの絞り込み機能は次段階で追加します。</p></div></div>';
 	}
 }
