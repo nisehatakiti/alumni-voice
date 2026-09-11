@@ -47,6 +47,9 @@ class AlumniVoice_Post_Type {
 			'show_ui' => true,
 			'show_in_rest' => true,
 		) );
+		foreach ( array( '進学', '就職', 'その他' ) as $career_label ) {
+			if ( ! term_exists( $career_label, 'alumni_voice_career' ) ) wp_insert_term( $career_label, 'alumni_voice_career' );
+		}
 	}
 
 	public static function add_meta_boxes() {
