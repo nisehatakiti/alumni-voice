@@ -62,6 +62,7 @@ class AlumniVoice_Post_Type {
 			'full_name' => '氏名',
 			'furigana' => 'ふりがな',
 			'graduation_year' => '卒業年',
+			'graduation_term' => '卒業期（どちらか一方を入力すると自動補完）',
 			'class_name' => '組',
 			'email' => 'メールアドレス',
 			'display_name' => '公開表示名',
@@ -74,10 +75,7 @@ class AlumniVoice_Post_Type {
 			echo '<input type="' . esc_attr( $type ) . '" class="widefat" name="alumni_voice_' . esc_attr( $key ) . '" value="' . esc_attr( $value ) . '"></p>';
 		}
 
-		$term = get_post_meta( $post->ID, '_alumni_voice_graduation_term', true );
-		if ( $term !== '' ) {
-			echo '<p><strong>卒業期（Alumni Coreから自動補完）</strong><br>' . esc_html( $term ) . '期</p>';
-		}
+		
 	}
 
 	public static function save_meta( $post_id ) {
@@ -95,18 +93,33 @@ class AlumniVoice_Post_Type {
 			update_post_meta( $post_id, '_alumni_voice_email', sanitize_email( wp_unslash( $_POST['alumni_voice_email'] ) ) );
 		}
 
-		if ( isset( $_POST['alumni_voice_graduation_year'] ) ) {
-			$year = absint( $_POST['alumni_voice_graduation_year'] );
-			update_post_meta( $post_id, '_alumni_voice_graduation_year', $year );
+		$year = isset( $_POST['alumni_voice_graduation_year'] ) ? absint( $_POST['alumni_voice_graduation_year'] ) : 0;
+		$term = isset( $_POST['alumni_voice_graduation_term'] ) ? absint( $_POST['alumni_voice_graduation_term'] ) : 0;
 
-			/**
-			 * Alumni Core integrations can return the graduation term calculated
-			 * from the saved school baseline and graduation year.
-			 */
-			$term = apply_filters( 'alumni_core_graduation_term_from_year', null, $year, $post_id );
-			if ( null !== $term && '' !== $term ) {
-				update_post_meta( $post_id, '_alumni_voice_graduation_term', absint( $term ) );
+		// Prefer the value explicitly entered by the editor and use Alumni Core
+		// to complement the missing side.
+		if ( $year > 0 && $term <= 0 ) {
+			$resolved_term = apply_filters( 'alumni_core_graduation_term_from_year', null, $year, $post_id );
+			if ( null !== $resolved_term && '' !== $resolved_term ) {
+				$term = absint( $resolved_term );
 			}
+		} elseif ( $term > 0 && $year <= 0 && function_exists( 'alumni_core_graduation_term_to_year' ) ) {
+			$resolved_year = alumni_core_graduation_term_to_year( $term );
+			if ( null !== $resolved_year && '' !== $resolved_year ) {
+				$year = absint( $resolved_year );
+			}
+		}
+
+		if ( $year > 0 ) {
+			update_post_meta( $post_id, '_alumni_voice_graduation_year', $year );
+		} else {
+			delete_post_meta( $post_id, '_alumni_voice_graduation_year' );
+		}
+
+		if ( $term > 0 ) {
+			update_post_meta( $post_id, '_alumni_voice_graduation_term', $term );
+		} else {
+			delete_post_meta( $post_id, '_alumni_voice_graduation_term' );
 		}
 	}
 }
