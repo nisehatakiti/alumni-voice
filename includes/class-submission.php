@@ -11,12 +11,19 @@ class AlumniVoice_Submission {
 		ob_start();
 
 		$questions = AlumniVoice_Form_Settings::get_questions();
+		$public_settings = AlumniVoice_Form_Settings::get_public_settings();
 		$graduation_lookup_url = function_exists( 'alumni_core_get_graduation_lookup_url' )
 			? (string) alumni_core_get_graduation_lookup_url()
 			: '';
 
 		?>
 		<style>
+		/* Hide the theme's duplicate page title only on the generated AlumniVoice submit page. */
+		.alumni-voice-submit-page .entry-title,
+		.alumni-voice-submit-page .page-title,
+		.alumni-voice-submit-page .wp-block-post-title {
+			display: none;
+		}
 		.alumni-voice-form {
 			max-width: 1280px;
 			margin: 0 auto;
@@ -39,6 +46,14 @@ class AlumniVoice_Submission {
 			margin: 0 auto;
 			padding-left: 1.4rem;
 			border-left: 6px solid #2e67a6;
+		}
+		.alumni-voice-form__hero-brand {
+			margin: 0 0 .35rem;
+			color: #2e67a6;
+			font-size: .82rem;
+			font-weight: 800;
+			letter-spacing: .12em;
+			text-transform: uppercase;
 		}
 		.alumni-voice-form__hero h1 {
 			margin: 0 0 .45rem;
@@ -204,7 +219,7 @@ class AlumniVoice_Submission {
 		}
 		</style>
 
-		<div class="alumni-voice-form__hero"><div class="alumni-voice-form__hero-inner"><h1>卒業生の声を投稿する</h1><p>みなさんの経験やメッセージが、在校生の未来につながります。</p></div></div>
+		<div class="alumni-voice-form__hero"><div class="alumni-voice-form__hero-inner"><?php if ( '' !== trim( (string) $public_settings['hero_brand'] ) ) : ?><p class="alumni-voice-form__hero-brand"><?php echo esc_html( $public_settings['hero_brand'] ); ?></p><?php endif; ?><h1><?php echo esc_html( $public_settings['hero_title'] ); ?></h1><p><?php echo esc_html( $public_settings['hero_description'] ); ?></p></div></div>
 		<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="alumni-voice-form">
 			<?php if ( isset( $_GET['alumni_voice_submitted'] ) && '1' === sanitize_text_field( wp_unslash( $_GET['alumni_voice_submitted'] ) ) ) : ?>
 				<div class="alumni-voice-form__success">ご投稿を受け付けました。内容を確認のうえ、管理者が編集・公開します。</div>
