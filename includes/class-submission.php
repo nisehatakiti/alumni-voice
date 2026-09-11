@@ -18,171 +18,265 @@ class AlumniVoice_Submission {
 		?>
 		<style>
 		.alumni-voice-form {
-			max-width: 1100px;
+			max-width: 1280px;
 			margin: 0 auto;
+			padding: 0 1rem 3rem;
+			color: #22364f;
 		}
-		.alumni-voice-form__intro {
-			margin-bottom: 2rem;
-			padding-bottom: 1.5rem;
-			border-bottom: 1px solid #ddd;
+		.alumni-voice-form *,
+		.alumni-voice-form *::before,
+		.alumni-voice-form *::after {
+			box-sizing: border-box;
+		}
+		.alumni-voice-form__hero {
+			margin: 0 -1rem 2rem;
+			padding: 2.4rem max( 1rem, calc( ( 100vw - 1280px ) / 2 ) ) 2.4rem;
+			background: linear-gradient( 105deg, #eef5fb 0%, #f8fbfe 58%, #edf6ef 100% );
+			border-bottom: 1px solid #dbe6ef;
+		}
+		.alumni-voice-form__hero-inner {
+			max-width: 1280px;
+			margin: 0 auto;
+			padding-left: 1.4rem;
+			border-left: 6px solid #2e67a6;
+		}
+		.alumni-voice-form__hero h1 {
+			margin: 0 0 .45rem;
+			font-size: clamp( 1.8rem, 4vw, 2.7rem );
+			line-height: 1.2;
+			letter-spacing: .04em;
+		}
+		.alumni-voice-form__hero p {
+			margin: 0;
+			font-size: 1.05rem;
+		}
+		.alumni-voice-form__section {
+			margin: 1.5rem 0;
+			padding: 1.6rem 1.8rem 1.9rem;
+			background: #fff;
+			border: 1px solid #d9e1e8;
+			border-radius: 12px;
+			box-shadow: 0 10px 28px rgba( 33, 54, 79, .06 );
+		}
+		.alumni-voice-form__section-title {
+			margin: 0 0 .65rem;
+			padding: 0 0 .5rem .8rem;
+			border-bottom: 1px solid #c9d8e7;
+			border-left: 7px solid #2e67a6;
+			font-size: 1.45rem;
+			line-height: 1.2;
 		}
 		.alumni-voice-form__notice {
-			margin: .5rem 0;
+			margin: .25rem 0;
+			line-height: 1.75;
+		}
+		.alumni-voice-form__success {
+			margin: 0 0 1.5rem;
+			padding: 1rem 1.2rem;
+			background: #edf8ef;
+			border: 1px solid #b8d8bd;
+			border-radius: 8px;
 		}
 		.alumni-voice-form__grid {
 			display: grid;
 			grid-template-columns: repeat( 12, minmax( 0, 1fr ) );
-			gap: 1.25rem 1.5rem;
-			margin: 1.5rem 0 2.5rem;
+			gap: 1.1rem 1.6rem;
+			margin-top: 1.35rem;
 		}
 		.alumni-voice-form__field {
 			min-width: 0;
 		}
-		.alumni-voice-form__field label {
-			display: block;
-			font-weight: 600;
-			margin-bottom: .45rem;
+		.alumni-voice-form__field label,
+		.alumni-voice-form__question label {
+			display: flex;
+			align-items: center;
+			gap: .55rem;
+			font-weight: 700;
+			margin-bottom: .5rem;
+			color: #22364f;
+		}
+		.alumni-voice-form__required {
+			display: inline-block;
+			padding: .18rem .5rem;
+			border-radius: 5px;
+			background: #f8e9ec;
+			color: #b33b4b;
+			font-size: .78rem;
+			font-weight: 700;
+			line-height: 1.25;
 		}
 		.alumni-voice-form__field input,
-		.alumni-voice-form__field textarea {
-			box-sizing: border-box;
+		.alumni-voice-form__question textarea {
 			width: 100%;
 			max-width: 100%;
+			border: 1px solid #b8c7d4;
+			border-radius: 7px;
+			background: #fff;
+			color: #22364f;
+			box-shadow: inset 0 1px 2px rgba( 33, 54, 79, .03 );
+		}
+		.alumni-voice-form__field input {
+			height: 48px;
+			padding: .65rem .8rem;
+		}
+		.alumni-voice-form__field input:focus,
+		.alumni-voice-form__question textarea:focus {
+			outline: 0;
+			border-color: #2e67a6;
+			box-shadow: 0 0 0 3px rgba( 46, 103, 166, .12 );
 		}
 		.alumni-voice-form__field--half { grid-column: span 6; }
-		.alumni-voice-form__field--third { grid-column: span 4; }
 		.alumni-voice-form__field--year { grid-column: span 3; }
 		.alumni-voice-form__field--term { grid-column: span 3; }
-		.alumni-voice-form__field--class { grid-column: span 2; }
-		.alumni-voice-form__field--club { grid-column: span 5; }
-		.alumni-voice-form__field--committee { grid-column: span 5; }
 		.alumni-voice-form__field--lookup {
-			grid-column: span 6;
+			grid-column: span 3;
 			display: flex;
 			align-items: flex-end;
-			padding-bottom: .1rem;
 		}
 		.alumni-voice-form__field--lookup a {
-			display: inline-block;
+			padding-bottom: .8rem;
+			color: #245fa2;
+			font-weight: 700;
+			text-decoration: none;
 		}
+		.alumni-voice-form__field--lookup a:hover { text-decoration: underline; }
+		.alumni-voice-form__field--class { grid-column: span 3; }
+		.alumni-voice-form__field--club { grid-column: span 4; }
+		.alumni-voice-form__field--committee { grid-column: span 5; }
+		.alumni-voice-form__input-with-suffix {
+			display: flex;
+			align-items: center;
+			gap: .55rem;
+		}
+		.alumni-voice-form__input-with-suffix input { min-width: 0; }
 		.alumni-voice-form__suffix {
-			margin-left: .4rem;
+			font-weight: 700;
 			white-space: nowrap;
 		}
-		.alumni-voice-form__interview {
-			margin-top: 2rem;
-			padding-top: .25rem;
-			border-top: 1px solid #ddd;
+		.alumni-voice-form__interview-description {
+			margin: 0 0 1.15rem;
+			line-height: 1.75;
 		}
 		.alumni-voice-form__question {
-			margin: 1.5rem 0;
-			max-width: 50%;
-		}
-		.alumni-voice-form__question label {
-			display: block;
-			font-weight: 600;
-			margin-bottom: .6rem;
+			margin-top: 1rem;
+			padding: 1.1rem 1.25rem 1.2rem;
+			background: #f5f8fc;
+			border-radius: 9px;
 		}
 		.alumni-voice-form__question textarea {
-			box-sizing: border-box;
-			width: 100%;
-			min-height: 180px;
+			display: block;
+			min-height: 190px;
+			padding: .9rem 1rem;
 			resize: vertical;
+			line-height: 1.7;
 		}
+		.alumni-voice-form__submit {
+			margin: 1.5rem 0 0;
+			text-align: center;
+		}
+		.alumni-voice-form__submit button {
+			min-width: 180px;
+			padding: .9rem 1.8rem;
+			border: 0;
+			border-radius: 7px;
+			background: #2e67a6;
+			color: #fff;
+			font-weight: 700;
+			font-size: 1rem;
+			cursor: pointer;
+		}
+		.alumni-voice-form__submit button:hover { opacity: .92; }
 		@media ( max-width: 782px ) {
-			.alumni-voice-form__grid {
-				grid-template-columns: 1fr;
-				gap: 1rem;
-			}
+			.alumni-voice-form { padding: 0 .75rem 2rem; }
+			.alumni-voice-form__hero { margin: 0 -.75rem 1.25rem; padding: 1.6rem .75rem; }
+			.alumni-voice-form__section { padding: 1.2rem 1rem 1.35rem; border-radius: 9px; }
+			.alumni-voice-form__grid { grid-template-columns: 1fr; gap: 1rem; }
 			.alumni-voice-form__field,
 			.alumni-voice-form__field--half,
-			.alumni-voice-form__field--third,
 			.alumni-voice-form__field--year,
 			.alumni-voice-form__field--term,
+			.alumni-voice-form__field--lookup,
 			.alumni-voice-form__field--class,
 			.alumni-voice-form__field--club,
-			.alumni-voice-form__field--committee,
-			.alumni-voice-form__field--lookup {
-				grid-column: auto;
-			}
-			.alumni-voice-form__field--lookup {
-				align-items: flex-start;
-				padding-bottom: 0;
-			}
-			.alumni-voice-form__question {
-				max-width: 100%;
-			}
+			.alumni-voice-form__field--committee { grid-column: auto; }
+			.alumni-voice-form__field--lookup { align-items: flex-start; }
+			.alumni-voice-form__field--lookup a { padding-bottom: 0; }
 		}
 		</style>
 
+		<div class="alumni-voice-form__hero"><div class="alumni-voice-form__hero-inner"><h1>卒業生の声を投稿する</h1><p>みなさんの経験やメッセージが、在校生の未来につながります。</p></div></div>
 		<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="alumni-voice-form">
+			<?php if ( isset( $_GET['alumni_voice_submitted'] ) && '1' === sanitize_text_field( wp_unslash( $_GET['alumni_voice_submitted'] ) ) ) : ?>
+				<div class="alumni-voice-form__success">ご投稿を受け付けました。内容を確認のうえ、管理者が編集・公開します。</div>
+			<?php endif; ?>
 			<input type="hidden" name="action" value="alumni_voice_submit">
 			<?php wp_nonce_field( 'alumni_voice_submit', 'alumni_voice_nonce' ); ?>
 
-			<section class="alumni-voice-form__intro">
-				<h2>個人情報</h2>
+			<section class="alumni-voice-form__section alumni-voice-form__intro">
+				<h2 class="alumni-voice-form__section-title">基本情報</h2>
 				<p class="alumni-voice-form__notice">入力いただいた個人情報は、本校の同窓生であることを確認する用途で使用させていただきます。個人情報については開示されません。</p>
 				<p class="alumni-voice-form__notice">いただいた連絡先情報は公開されませんが、今後の同窓会活動でご連絡を差し上げる場合があります。</p>
 			</section>
 
 			<div class="alumni-voice-form__grid">
 				<div class="alumni-voice-form__field alumni-voice-form__field--half">
-					<label for="alumni_voice_full_name">氏名</label>
-					<input id="alumni_voice_full_name" type="text" name="full_name" required>
+					<label for="alumni_voice_full_name">氏名 <span class="alumni-voice-form__required">必須</span></label>
+					<input id="alumni_voice_full_name" type="text" name="full_name" placeholder="例）山田 太郎" required>
 				</div>
 				<div class="alumni-voice-form__field alumni-voice-form__field--half">
 					<label for="alumni_voice_furigana">ふりがな</label>
-					<input id="alumni_voice_furigana" type="text" name="furigana">
+					<input id="alumni_voice_furigana" type="text" name="furigana" placeholder="例）やまだ たろう">
 				</div>
 
 				<div class="alumni-voice-form__field alumni-voice-form__field--half">
-					<label for="alumni_voice_display_name">公開表示名</label>
-					<input id="alumni_voice_display_name" type="text" name="display_name" required>
+					<label for="alumni_voice_display_name">公開表示名 <span class="alumni-voice-form__required">必須</span></label>
+					<input id="alumni_voice_display_name" type="text" name="display_name" placeholder="例）山田 太郎（旧3年2組）" required>
 				</div>
 				<div class="alumni-voice-form__field alumni-voice-form__field--half">
-					<label for="alumni_voice_email">メールアドレス</label>
-					<input id="alumni_voice_email" type="email" name="email" required>
+					<label for="alumni_voice_email">メールアドレス <span class="alumni-voice-form__required">必須</span></label>
+					<input id="alumni_voice_email" type="email" name="email" placeholder="例）example@example.com" required>
 				</div>
 
 				<div class="alumni-voice-form__field alumni-voice-form__field--year">
 					<label for="alumni_voice_graduation_year">卒業年</label>
-					<div><input id="alumni_voice_graduation_year" type="number" name="graduation_year" min="1000" max="9999" inputmode="numeric" placeholder="2020"><span class="alumni-voice-form__suffix">年卒</span></div>
+					<div class="alumni-voice-form__input-with-suffix"><input id="alumni_voice_graduation_year" type="number" name="graduation_year" min="1000" max="9999" inputmode="numeric" placeholder="2020"><span class="alumni-voice-form__suffix">年卒</span></div>
 				</div>
 				<div class="alumni-voice-form__field alumni-voice-form__field--term">
 					<label for="alumni_voice_graduation_term">卒業期</label>
-					<div><input id="alumni_voice_graduation_term" type="number" name="graduation_term" min="1" max="999" inputmode="numeric" placeholder="123"><span class="alumni-voice-form__suffix">期</span></div>
+					<div class="alumni-voice-form__input-with-suffix"><input id="alumni_voice_graduation_term" type="number" name="graduation_term" min="1" max="999" inputmode="numeric" placeholder="123"><span class="alumni-voice-form__suffix">期</span></div>
 				</div>
 				<?php if ( '' !== $graduation_lookup_url ) : ?>
 					<div class="alumni-voice-form__field alumni-voice-form__field--lookup">
-						<a href="<?php echo esc_url( $graduation_lookup_url ); ?>" target="_blank" rel="noopener noreferrer">卒業期早見表を別窓で開く</a>
+						<a href="<?php echo esc_url( $graduation_lookup_url ); ?>" target="_blank" rel="noopener noreferrer">卒業期早見表</a>
 					</div>
 				<?php endif; ?>
 
 				<div class="alumni-voice-form__field alumni-voice-form__field--class">
 					<label for="alumni_voice_class_name">組</label>
-					<input id="alumni_voice_class_name" type="text" name="class_name" maxlength="6" size="6">
+					<input id="alumni_voice_class_name" type="text" name="class_name" maxlength="6" size="6" placeholder="例）2">
 				</div>
 				<div class="alumni-voice-form__field alumni-voice-form__field--club">
 					<label for="alumni_voice_club_activity">部活動</label>
-					<input id="alumni_voice_club_activity" type="text" name="club_activity">
+					<input id="alumni_voice_club_activity" type="text" name="club_activity" placeholder="例）サッカー部">
 				</div>
 				<div class="alumni-voice-form__field alumni-voice-form__field--committee">
 					<label for="alumni_voice_committee_activity">委員会</label>
-					<input id="alumni_voice_committee_activity" type="text" name="committee_activity">
+					<input id="alumni_voice_committee_activity" type="text" name="committee_activity" placeholder="例）生徒会">
 				</div>
 			</div>
 
-			<section class="alumni-voice-form__interview">
-				<h2>インタビュー</h2>
+			<section class="alumni-voice-form__section alumni-voice-form__interview">
+				<h2 class="alumni-voice-form__section-title">インタビュー</h2>
+				<p class="alumni-voice-form__interview-description">それぞれの質問に、できるだけ具体的にお答えください。在校生や卒業生のみなさんにとって、貴重なメッセージとなります。</p>
 				<?php foreach ( $questions as $q ) : ?>
 					<div class="alumni-voice-form__question">
-						<label for="alumni_voice_answer_<?php echo esc_attr( $q['id'] ); ?>"><?php echo esc_html( $q['question'] ); ?></label>
-						<textarea id="alumni_voice_answer_<?php echo esc_attr( $q['id'] ); ?>" rows="7" name="answers[<?php echo esc_attr( $q['id'] ); ?>]"<?php echo ! empty( $q['required'] ) ? ' required' : ''; ?>></textarea>
+						<label for="alumni_voice_answer_<?php echo esc_attr( $q['id'] ); ?>"><?php echo esc_html( $q['question'] ); ?><?php if ( ! empty( $q['required'] ) ) : ?> <span class="alumni-voice-form__required">必須</span><?php endif; ?></label>
+						<textarea id="alumni_voice_answer_<?php echo esc_attr( $q['id'] ); ?>" rows="7" name="answers[<?php echo esc_attr( $q['id'] ); ?>]" maxlength="2000" placeholder="できるだけ具体的にご記入ください。"<?php echo ! empty( $q['required'] ) ? ' required' : ''; ?>></textarea>
 					</div>
 				<?php endforeach; ?>
 			</section>
 
-			<p><button type="submit">送信する</button></p>
+			<p class="alumni-voice-form__submit"><button type="submit">送信する</button></p>
 		</form>
 		<?php
 
