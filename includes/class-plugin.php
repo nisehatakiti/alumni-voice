@@ -11,6 +11,7 @@ class AlumniVoice_Plugin {
 		require_once ALUMNI_VOICE_PATH . 'includes/class-post-type.php';
 		require_once ALUMNI_VOICE_PATH . 'includes/class-form-settings.php';
 		require_once ALUMNI_VOICE_PATH . 'includes/class-submission.php';
+		require_once ALUMNI_VOICE_PATH . 'includes/class-public-content.php';
 		require_once ALUMNI_VOICE_PATH . 'admin/class-admin.php';
 
 		add_action( 'alumni_core_loaded', array( __CLASS__, 'initialize' ) );
@@ -21,6 +22,7 @@ class AlumniVoice_Plugin {
 		AlumniVoice_Form_Settings::ensure_defaults();
 		AlumniVoice_Form_Settings::register();
 		AlumniVoice_Submission::register();
+		AlumniVoice_Public_Content::register();
 		AlumniVoice_Admin::register();
 	}
 }
